@@ -9,6 +9,7 @@ A RESTful API for managing tasks, built with **FastAPI**, **SQLAlchemy**, and de
 - Create, read, update, and delete tasks
 - Task status management (`todo`, `in_progress`, `completed`)
 - FastAPI interactive documentation at `/docs`
+- API key authentication (via `X-API-Key` header)
 - Easy local or cloud deployment (SQLite/PostgreSQL)
 
 ---
@@ -55,6 +56,10 @@ uvicorn main:app --host 0.0.0.0 --port 8000 --reload
 
 ---
 
+## API Endpoints
+
+All endpoints require an `X-API-Key` header.
+
 ### Create a Task
 
 ```http
@@ -64,6 +69,7 @@ POST /tasks/
 ```bash
 curl -X POST "http://localhost:8000/tasks/" \
   -H "Content-Type: application/json" \
+  -H "X-API-Key: your-secret-api-key" \
   -d '{"title":"Test Task","description":"Test","status":"todo"}'
 ```
 
@@ -76,7 +82,8 @@ GET /tasks/
 ```
 
 ```bash
-curl "http://localhost:8000/tasks/" 
+curl "http://localhost:8000/tasks/" \
+  -H "X-API-Key: your-secret-api-key"
 ```
 
 ---
@@ -88,7 +95,8 @@ GET /tasks/{id}
 ```
 
 ```bash
-curl "http://localhost:8000/tasks/1" 
+curl "http://localhost:8000/tasks/1" \
+  -H "X-API-Key: your-secret-api-key"
 ```
 
 ---
@@ -102,6 +110,7 @@ PUT /tasks/{id}
 ```bash
 curl -X PUT "http://localhost:8000/tasks/1" \
   -H "Content-Type: application/json" \
+  -H "X-API-Key: your-secret-api-key" \
   -d '{"title":"Updated Task"}'
 ```
 
@@ -115,6 +124,7 @@ DELETE /tasks/{id}
 
 ```bash
 curl -X DELETE "http://localhost:8000/tasks/1" \
+  -H "X-API-Key: your-secret-api-key"
 ```
 
 ---
