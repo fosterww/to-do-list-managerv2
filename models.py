@@ -1,8 +1,7 @@
 from sqlalchemy import Column, Integer, String, Enum, DateTime
 from database import Base
-from datetime import datetime
+from datetime import datetime, timezone
 from schemas import TaskStatus
-
 
 task_status_enum = Enum(
     TaskStatus,
@@ -19,8 +18,8 @@ class Task(Base):
     title = Column(String, nullable=False)
     description = Column(String, nullable=True)
     status = Column(task_status_enum, default=TaskStatus.TODO, nullable=False)
-    created_at = Column(DateTime, default=datetime.utcnow, nullable=False)
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow, nullable=False)
+    created_at = Column(DateTime, default=datetime.now(timezone.utc), nullable=False)
+    updated_at = Column(DateTime, default=datetime.now(timezone.utc), onupdate=datetime.utcnow, nullable=False)
     
 
     

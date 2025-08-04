@@ -26,7 +26,7 @@ async def get_api_key(api_key: str = Security(api_key_header)):
 @router.post("/", response_model=TaskResponse, status_code=201, dependencies=[Depends(get_api_key)])
 def create_task(task: TaskCreate, db: Session = Depends(get_db)):
     logger.info(f"Creating task with title: {task.title}")
-    db_task = Task(**task.dict())
+    db_task = Task(**task.model_dump())
     db.add(db_task)
     db.commit()
     db.refresh(db_task)
@@ -57,7 +57,7 @@ def update_task(task_id: int, task_update: TaskUpdate, db: Session = Depends(get
     if not task:
         logger.warning(f"Task not found: {task_id}")
         raise HTTPException(status_code=404, detail="Task not found")
-    update_data = task_update.dict(exclude_unset=True)
+    update_data = task_update.model_dump(exclude_unset=True)
     for key, value in update_data.items():
         setattr(task, key, value)
     db.commit()
